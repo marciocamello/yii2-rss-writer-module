@@ -98,8 +98,12 @@ class Rss extends Module
      */
     public function deleteItems($feedId, array $conditions)
     {
-        Yii::$app->cache->delete("{$this->cacheKeyPrefix}-{$feedId}");
         $conditions = array_merge($conditions, ['feed_id' => $feedId]);
-        return Feed::deleteAll($conditions);
+        if ($deletedItems = Feed::deleteAll($conditions)) {
+            Yii::$app->cache->delete("{$this->cacheKeyPrefix}-{$feedId}");
+            return $deletedItems;
+        } else {
+            return false;
+        }
     }
 }
