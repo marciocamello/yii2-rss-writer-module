@@ -1,6 +1,6 @@
 {
 	"name": "himiklab/yii2-rss-writer-module",
-	"description": "Yii2 module for automatic generation RSS 2.0 feeds",
+	"description": "Yii2 module for automatically generation RSS 2.0 feeds",
 	"keywords": ["yii2", "rss", "writer", "module"],
 	"type": "yii2-extension",
 	"license": "MIT",

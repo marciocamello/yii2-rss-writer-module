@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
 use himiklab\rss\Models\Feed;
 
 /**
- * Yii2 module for automatic generation RSS 2.0 feeds.
+ * Yii2 module for automatically generation RSS 2.0 feeds.
  *
  * @author HimikLab
  * @package himiklab\rss

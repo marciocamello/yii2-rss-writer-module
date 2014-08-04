@@ -1,6 +1,11 @@
 RSS Generator Module for Yii2
 ========================
-Yii2 module for automatic generation RSS 2.0 feeds.
+Yii2 module for automatically generation RSS 2.0 feeds.
+
+Main features:
+* automatic caching of rss feeds
+* unlimited number of rss feeds
+* flexible module configuration
 
 Installation
 ------------
@@ -89,13 +94,31 @@ Usage
 For example:
 
 ```php
-$rss = Yii::$app->getModule('rss');
-$rssItem = $rss->createNewItem();
+...
+public function beforeSave($insert)
+{
+    if (parent::beforeSave($insert)) {
+        if ($insert) {
+            $rss = Yii::$app->getModule('rss');
+            $rssItem = $rss->createNewItem();
 
-$rssItem->title = 'New article';
-$rssItem->description = 'On our website today released a new article.';
-$rssItem->link = 'http://your.site.com/new-article';
-$rssItem->pubDate = time();
+            $rssItem->title = $this->title;
+            $rssItem->description = $this->description;
+            $rssItem->link = Url::to($this->url, true);
+            $rssItem->pubDate = time();
 
-$rss->addItemToFeed('rss.xml', $rssItem);
+            return $rss->addItemToFeed('rss.xml', $rssItem);
+        }
+        return true;
+    }
+    return false;
+}
+
+public function afterDelete()
+{
+    parent::afterDelete();
+    $rss = Yii::$app->getModule('rss');
+    
+    $rss->deleteItems('rss.xml', ['link' => Url::to($this->url, true)]);
+}
 ```
